@@ -1,12 +1,14 @@
 _ = require "jquery"
 $ = require "underscore"
 
-InputWidget = require "./input_widget"
-multiselecttemplate = require "./multiselecttemplate"
-BokehView = require "../../core/bokeh_view"
 p = require "../../core/properties"
 
-class MultiSelectView extends BokehView
+InputWidget = require "./input_widget"
+
+multiselecttemplate = require "./multiselecttemplate"
+
+
+class MultiSelectView extends InputWidget.View
   tagName: "div"
   template: multiselecttemplate
   events:
@@ -21,6 +23,7 @@ class MultiSelectView extends BokehView
     @listenTo(@model, 'change:title', @render)
 
   render: () ->
+    super()
     @$el.empty()
     html = @template(@model.attributes)
     @$el.html(html)
@@ -37,8 +40,12 @@ class MultiSelectView extends BokehView
     )
 
   change_input: () ->
-    @mset('value', @$('select').val())
-    @mget('callback')?.execute(@model)
+    value = @$el.find('select').val()
+    if value
+      @model.value = value
+    else
+      @model.value = []
+    super()
 
 class MultiSelect extends InputWidget.Model
   type: "MultiSelect"

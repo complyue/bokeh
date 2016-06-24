@@ -10,6 +10,8 @@ class Range1d extends Range.Model
       start:  [ p.Number, 0 ]
       end:    [ p.Number, 1 ]
       bounds: [ p.Any       ] # TODO (bev)
+      min_interval: [ p.Any ]
+      max_interval: [ p.Any ]
     }
 
   _set_auto_bounds: () ->
@@ -29,12 +31,12 @@ class Range1d extends Range.Model
   initialize: (attrs, options) ->
     super(attrs, options)
 
-    @register_property('min',
+    @define_computed_property('min',
         () -> Math.min(@get('start'), @get('end'))
       , true)
     @add_dependencies('min', this, ['start', 'end'])
 
-    @register_property('max',
+    @define_computed_property('max',
         () -> Math.max(@get('start'), @get('end'))
       , true)
     @add_dependencies('max', this, ['start', 'end'])

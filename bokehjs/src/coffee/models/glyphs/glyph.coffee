@@ -6,6 +6,7 @@ Renderer = require "../renderers/renderer"
 p = require "../../core/properties"
 bbox = require "../../core/util/bbox"
 Model = require "../../model"
+bokehgl = require "./webgl/main"
 
 class GlyphView extends Renderer.View
 
@@ -21,7 +22,9 @@ class GlyphView extends Renderer.View
     if @renderer?.plot_view?
       ctx = @renderer.plot_view.canvas_view.ctx
       if ctx.glcanvas?
-        @_init_gl(ctx.glcanvas.gl)
+        Cls = bokehgl[@model.type + 'GLGlyph']
+        if Cls
+          @glglyph = new Cls(ctx.glcanvas.gl, this)
 
   render: (ctx, indices, data) ->
 
@@ -50,6 +53,7 @@ class GlyphView extends Renderer.View
       return false
     [sx, sy] = [(dx[1]-dx[0]) / wx, (dy[1]-dy[0]) / wy]
     trans =
+        pixel_ratio: ctx.pixel_ratio,  # pass pixel_ratio to webgl
         width: ctx.glcanvas.width, height: ctx.glcanvas.height,
         dx: dx[0]/sx, dy: dy[0]/sy, sx: sx, sy: sy
     @glglyph.draw(indices, mainglyph, trans)
@@ -64,14 +68,15 @@ class GlyphView extends Renderer.View
       [bb[1], bb[3]]
     ])
 
+  get_anchor_point: (anchor, i, [sx, sy]) ->
+    switch anchor
+      when "center" then {x: @scx(i, sx, sy), y: @scy(i, sx, sy)}
+      else               null
+
   # glyphs that need more sophisticated "snap to data" behaviour (like
   # snapping to a patch centroid, e.g, should override these
   scx: (i) -> return @sx[i]
   scy: (i) -> return @sy[i]
-
-  # any additional customization can happen here
-  _init_gl: () -> false
-
 
   _xy_index: () ->
     index = rbush()
@@ -120,11 +125,13 @@ class GlyphView extends Renderer.View
       return (Math.abs(spt1[i] - spt0[i]) for i in [0...spt0.length])
 
   get_reference_point: () ->
-    reference_point = @mget('reference_point')
-    if _.isNumber(reference_point)
-      return @data[reference_point]
-    else
-      return reference_point
+    return undefined
+    #reference_point = @mget('reference_point')
+    #ret = if _.isNumber(reference_point)
+    #  @data[reference_point]
+    #else
+    #  reference_point
+    #return ret
 
   draw_legend: (ctx, x0, x1, y0, y1) -> null
 
@@ -164,10 +171,15 @@ class GlyphView extends Renderer.View
       @visuals.line.set_vectorize(ctx, reference_point)
       ctx.stroke()
 
-class Glyph extends Renderer.Model
+class Glyph extends Model
   @define {
       visible: [ p.Bool, true ]
     }
+
+  @internal {
+    x_range_name: [ p.String,      'default' ]
+    y_range_name: [ p.String,      'default' ]
+  }
 
 module.exports =
   Model: Glyph

@@ -1,19 +1,9 @@
-module Burtin {
+namespace Burtin {
+    import _ = Bokeh._;
     import plt = Bokeh.Plotting;
     import arange = Bokeh.LinAlg.arange;
     import Color = Bokeh.Color;
-
-    type Map<V> = {[key: string]: V}
-
-    function values<V>(obj: Map<V>): Array<V> {
-        const keys = Object.keys(obj);
-        const length = keys.length;
-        const values = Array<V>(length);
-        for (let i = 0; i < length; i++) {
-            values[i] = obj[keys[i]];
-        }
-        return values;
-    };
+    import Map = Bokeh.Map;
 
     console.log(`Bokeh ${Bokeh.version}`);
     Bokeh.set_log_level("debug");
@@ -90,7 +80,8 @@ module Burtin {
     const small_angle = big_angle / 7
 
     const p = plt.figure({
-        title: "",
+        title: null,
+        toolbar_sticky: false,
         plot_width: width, plot_height: height,
         x_axis_type: null, y_axis_type: null,
         x_range: [-420, 420], y_range: [-420, 420],
@@ -98,9 +89,6 @@ module Burtin {
         outline_line_color: "black",
         background_fill_color: "#f0e1d2",
         border_fill_color: "#f0e1d2"})
-
-    p.xgrid.grid_line_color = null
-    p.ygrid.grid_line_color = null
 
     // annular wedges
     const angles = df.index.map((i) => Math.PI/2 - big_angle/2 - i*big_angle)
@@ -144,11 +132,11 @@ module Burtin {
            text_font_size: "9pt", text_align: "center", text_baseline: "middle"})
 
     // OK, these hand drawn legends are pretty clunky, will be improved in future release
-    p.circle([-40, -40], [-370, -390], {color: values(gram_color), radius: 5})
+    p.circle([-40, -40], [-370, -390], {color: _.values(gram_color), radius: 5})
     p.text([-30, -30], [-370, -390], Object.keys(gram_color).map((gram) => `Gram-${gram}`),
            {text_font_size: "7pt", text_align: "left", text_baseline: "middle"})
 
-    p.rect([-40, -40, -40], [18, 0, -18], 30, 13, {color: values(drug_color)})
+    p.rect([-40, -40, -40], [18, 0, -18], 30, 13, {color: _.values(drug_color)})
     p.text([-15, -15, -15], [18, 0, -18], Object.keys(drug_color),
            {text_font_size: "9pt", text_align: "left", text_baseline: "middle"})
 

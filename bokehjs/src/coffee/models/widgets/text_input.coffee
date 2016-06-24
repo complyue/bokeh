@@ -1,13 +1,15 @@
 _ = require "underscore"
 
-InputWidget = require "./input_widget"
-template = require "./text_input_template"
 build_views = require "../../common/build_views"
-BokehView = require "../../core/bokeh_view"
+
 {logger} = require "../../core/logging"
 p = require "../../core/properties"
 
-class TextInputView extends BokehView
+InputWidget = require "./input_widget"
+template = require "./text_input_template"
+
+
+class TextInputView extends InputWidget.View
   tagName: "div"
   attributes:
      class: "bk-widget-form-group"
@@ -21,14 +23,18 @@ class TextInputView extends BokehView
     @listenTo(@model, 'change', @render)
 
   render: () ->
+    super()
     @$el.html(@template(@model.attributes))
+    # TODO - This 35 is a hack we should be able to compute it
+    if @model.height
+      @$el.find('input').height(@mget('height') - 35)
     return @
 
   change_input: () ->
     value = @$('input').val()
     logger.debug("widget/text_input: value = #{value}")
-    @mset('value', value)
-    @mget('callback')?.execute(@model)
+    @model.value = value
+    super()
 
 class TextInput extends InputWidget.Model
   type: "TextInput"

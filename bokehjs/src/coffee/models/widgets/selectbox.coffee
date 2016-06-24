@@ -1,22 +1,17 @@
 _ = require "underscore"
 
-InputWidget = require "./input_widget"
-template = require "./selecttemplate"
-BokehView = require "../../core/bokeh_view"
 {logger} = require "../../core/logging"
 p = require "../../core/properties"
 
-class SelectView extends BokehView
-  tagName: "div"
+InputWidget = require "./input_widget"
+
+template = require "./selecttemplate"
+
+
+class SelectView extends InputWidget.View
   template: template
   events:
     "change select": "change_input"
-
-  change_input: () ->
-    value = @$('select').val()
-    logger.debug("selectbox: value = #{value}")
-    @mset('value', value)
-    @mget('callback')?.execute(@model)
 
   initialize: (options) ->
     super(options)
@@ -24,10 +19,18 @@ class SelectView extends BokehView
     @listenTo(@model, 'change', @render)
 
   render: () ->
+    super()
     @$el.empty()
     html = @template(@model.attributes)
     @$el.html(html)
     return @
+
+  change_input: () ->
+    value = @$('select').val()
+    logger.debug("selectbox: value = #{value}")
+    @model.value = value
+    super()
+
 
 class Select extends InputWidget.Model
   type: "Select"

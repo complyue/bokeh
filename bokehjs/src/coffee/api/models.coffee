@@ -1,11 +1,16 @@
 module.exports = {
   ## api/typings/models/annotations.d.ts
-  Annotation:                             require("../models/annotations/annotation").Model
-  Legend:                                 require("../models/annotations/legend").Model
+  Arrow:                                  require("../models/annotations/arrow").Model
+  OpenHead:                               require("../models/annotations/arrow_head").OpenHead
+  NormalHead:                             require("../models/annotations/arrow_head").NormalHead
+  VeeHead:                                require("../models/annotations/arrow_head").VeeHead
   BoxAnnotation:                          require("../models/annotations/box_annotation").Model
+  Label:                                  require("../models/annotations/label").Model
+  LabelSet:                               require("../models/annotations/label_set").Model
+  Legend:                                 require("../models/annotations/legend").Model
   PolyAnnotation:                         require("../models/annotations/poly_annotation").Model
   Span:                                   require("../models/annotations/span").Model
-  #Overlay:                               require("../models/annotations/overlay").Model
+  Title:                                  require("../models/annotations/title").Model
   Tooltip:                                require("../models/annotations/tooltip").Model
 
   ## api/typings/models/axes.d.ts
@@ -21,15 +26,13 @@ module.exports = {
   OpenURL:                                require("../models/callbacks/open_url").Model
   CustomJS:                               require("../models/callbacks/customjs").Model
 
-  ## api/typings/models/component.d.ts
-  Component:                              require("../models/component").Model
-
   ## api/typings/models/formatters.d.ts
   TickFormatter:                          require("../models/formatters/tick_formatter").Model
   BasicTickFormatter:                     require("../models/formatters/basic_tick_formatter").Model
   LogTickFormatter:                       require("../models/formatters/basic_tick_formatter").Model
   CategoricalTickFormatter:               require("../models/formatters/categorical_tick_formatter").Model
   DatetimeTickFormatter:                  require("../models/formatters/datetime_tick_formatter").Model
+  FuncTickFormatter:                      require("../models/formatters/func_tick_formatter").Model
   NumeralTickFormatter:                   require("../models/formatters/numeral_tick_formatter").Model
   PrintfTickFormatter:                    require("../models/formatters/printf_tick_formatter").Model
 
@@ -39,6 +42,7 @@ module.exports = {
   Annulus:                                require("../models/glyphs/annulus").Model
   Arc:                                    require("../models/glyphs/arc").Model
   Bezier:                                 require("../models/glyphs/bezier").Model
+  Ellipse:                                require("../models/glyphs/ellipse").Model
   ImageRGBA:                              require("../models/glyphs/image_rgba").Model
   Image:                                  require("../models/glyphs/image").Model
   ImageURL:                               require("../models/glyphs/image_url").Model
@@ -63,10 +67,11 @@ module.exports = {
   ImageSource:                            require("../models/tiles/image_source").Model
 
   ## api/typings/models/layouts.d.ts
-  Layout:                                 require("../models/layouts/layout").Model
-  #BaseBox:                               require("../models/layouts/base_box").Model
-  HBox:                                   require("../models/layouts/hbox").Model
-  VBox:                                   require("../models/layouts/vbox").Model
+  LayoutDOM:                              require("../models/layouts/layout_dom").Model
+  Row:                                    require("../models/layouts/row").Model
+  Column:                                 require("../models/layouts/column").Model
+  Spacer:                                 require("../models/layouts/spacer").Model
+  WidgetBox:                              require("../models/layouts/widget_box").Model
 
   ## api/typings/models/map_plots.d.ts
   GMapPlot:                               require("../models/plots/gmap_plot").Model
@@ -96,7 +101,6 @@ module.exports = {
 
   ## api/typings/models/plots.d.ts
   Plot:                                   require("../models/plots/plot").Model
-  GridPlot:                               require("../models/layouts/grid_plot").Model
 
   ## api/typings/models/ranges.d.ts
   Range:                                  require("../models/ranges/range").Model
@@ -142,12 +146,17 @@ module.exports = {
   QUADKEYTileSource:                      require("../models/tiles/quadkey_tile_source").Model
   BBoxTileSource:                         require("../models/tiles/bbox_tile_source").Model
 
+  ## api/typings/models/toolbars.d.ts
+  ToolbarBase:                            require("../models/tools/toolbar_base").Model
+  Toolbar:                                require("../models/tools/toolbar").Model
+  ToolbarBox:                             require("../models/tools/toolbar_box").Model
+
   ## api/typings/models/tools.d.ts
   ToolEvents:                             require("../common/tool_events").Model
   Tool:                                   require("../models/tools/tool").Model
   PanTool:                                require("../models/tools/gestures/pan_tool").Model
   WheelZoomTool:                          require("../models/tools/gestures/wheel_zoom_tool").Model
-  PreviewSaveTool:                        require("../models/tools/actions/preview_save_tool").Model
+  SaveTool:                               require("../models/tools/actions/save_tool").Model
   UndoTool:                               require("../models/tools/actions/undo_tool").Model
   RedoTool:                               require("../models/tools/actions/redo_tool").Model
   ResetTool:                              require("../models/tools/actions/reset_tool").Model

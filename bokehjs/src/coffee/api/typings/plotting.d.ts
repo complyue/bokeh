@@ -1,7 +1,14 @@
 declare namespace Bokeh.Plotting {
-    function show(obj: Component, target?: HTMLElement): void;
+    function show(objs: Array<LayoutDOM>, target?: string | HTMLElement): Map<View<Model>>;
+    function show<T extends LayoutDOM>(obj: T, target?: string | HTMLElement): View<T>;
 
     function color(r: number, g: number, b: number): string;
+
+    function gridplot(children: Array<Array<Plot>>, options?: IGridPlotOptions): Box;
+    export interface IGridPlotOptions {
+        toolbar_location?: Location;
+        sizing_mode?: SizingMode;
+    }
 
     type AxisType = "linear" | "log" | "datetime" | Auto;
 
@@ -17,13 +24,17 @@ declare namespace Bokeh.Plotting {
         "lasso_select" |
         "box_zoom" | "xbox_zoom" | "ybox_zoom" |
         "hover" |
-        "previewsave" |
+        "save" | "previewsave" |
         "undo" |
         "redo" |
         "reset" |
         "help";
 
-    export interface FigureAttrs {
+
+    function figure(attributes?: IFigure, options?: ModelOpts): Figure;
+
+    var Figure: { new(attributes?: IFigure, options?: ModelOpts): Figure };
+    export interface IFigure extends IBasePlot {
         tools?: Array<Tool | ToolType> | string;
 
         x_range?: Range | [number, number] | Array<string>;
@@ -41,28 +52,21 @@ declare namespace Bokeh.Plotting {
         x_axis_label?: string;
         y_axis_label?: string;
 
-        title?: string;
-
-        plot_width?: Int;
-        plot_height?: Int;
-
-        min_border?: Int;
-        outline_line_color?: Color;
-        background_fill_color?: Color;
-        border_fill_color?: Color;
+        width?: Int;
+        height?: Int;
     }
-
-    function figure(attrs?: FigureAttrs): Figure;
-
-    var Figure: { new(attrs?: FigureAttrs): Figure };
     export interface Figure extends Plot {
         xgrid: Grid;
         ygrid: Grid;
+
+        xaxis: Axis;
+        yaxis: Axis;
 
         annular_wedge     (attrs: AnnularWedgeAttrs):     GlyphRenderer;
         annulus           (attrs: AnnulusAttrs):          GlyphRenderer;
         arc               (attrs: ArcAttrs):              GlyphRenderer;
         bezier            (attrs: BezierAttrs):           GlyphRenderer;
+        ellipse           (attrs: EllipseAttrs):          GlyphRenderer;
         gear              (attrs: GearAttrs):             GlyphRenderer;
         image             (attrs: ImageAttrs):            GlyphRenderer;
         image_rgba        (attrs: ImageRGBAAttrs):        GlyphRenderer;
@@ -125,6 +129,12 @@ declare namespace Bokeh.Plotting {
             cx1: DataAttr,
             cy1: DataAttr,
             opts?: BezierOpts):           GlyphRenderer;
+        ellipse(
+            x: DataAttr,
+            y: DataAttr,
+            width: SpatialAttr,
+            height: SpatialAttr,
+            opts?: EllipseOpts):             GlyphRenderer;
         gear(
             x: DataAttr,
             y: DataAttr,
@@ -367,6 +377,16 @@ declare namespace Bokeh.Plotting {
         cy0: DataAttr;
         cx1: DataAttr;
         cy1: DataAttr;
+    }
+
+    export interface EllipseOpts extends GlyphOpts, FillPropsOpts, LinePropsOpts {
+        angle?: AngularAttr;
+    }
+    export interface EllipseAttrs extends EllipseOpts {
+        x: DataAttr;
+        y: DataAttr;
+        width: SpatialAttr;
+        height: SpatialAttr;
     }
 
     export interface GearOpts extends GlyphOpts, LinePropsOpts, FillPropsOpts {

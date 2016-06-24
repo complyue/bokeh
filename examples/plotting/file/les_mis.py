@@ -1,4 +1,3 @@
-
 import numpy as np
 
 from bokeh.plotting import figure, show, output_file
@@ -42,7 +41,7 @@ source = ColumnDataSource(data=dict(
 ))
 
 p = figure(title="Les Mis Occurrences",
-           x_axis_location="above", tools="resize,hover,save",
+           x_axis_location="above", tools="hover,save",
            x_range=list(reversed(names)), y_range=names)
 
 p.plot_width = 800

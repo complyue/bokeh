@@ -6,7 +6,7 @@ from __future__ import absolute_import
 import six
 
 from ...core.properties import abstract
-from ...core.properties import Bool, Int, Float, String, Date, RelativeDelta, Enum, List, Dict, Tuple, Either, Instance
+from ...core.properties import Bool, Int, Float, String, Date, RelativeDelta, Enum, List, Dict, Tuple, Either, Instance, Override
 from ..callbacks import Callback
 from .widget import Widget
 from ...core.enums import SliderCallbackPolicy
@@ -58,6 +58,7 @@ class TextInput(InputWidget):
     widget by hitting Enter or clicking outside of the text box area.
     """)
 
+
 class AutocompleteInput(TextInput):
     """ Single-line input widget with auto-completion. """
 
@@ -65,6 +66,7 @@ class AutocompleteInput(TextInput):
     A list of completion strings. This will be used to guide the
     user upon typing the beginning of a desired value.
     """)
+
 
 class Select(InputWidget):
     """ Single-select widget.

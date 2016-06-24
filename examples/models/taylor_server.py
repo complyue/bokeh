@@ -8,7 +8,7 @@ from bokeh.document import Document
 from bokeh.models.glyphs import Line
 from bokeh.models import Plot, Range1d, LinearAxis, ColumnDataSource, Grid, Legend
 from bokeh.models.widgets import Slider, TextInput, Dialog
-from bokeh.models.layouts import HBox, VBox
+from bokeh.models.layouts import WidgetBox, Column
 
 document = Document()
 session = push_session(document)
@@ -35,7 +35,7 @@ def taylor(fx, xs, order, x_range=(0, 1), n=200):
 def update_data():
     x, fy, ty = taylor(expr, xs, order, (-2*sy.pi, 2*sy.pi), 200)
 
-    plot.title = "%s vs. taylor(%s, n=%d)" % (expr, expr, order)
+    plot.title.text = "%s vs. taylor(%s, n=%d)" % (expr, expr, order)
     legend.legends = [
         ("%s"         % expr, [line_f_glyph]),
         ("taylor(%s)" % expr, [line_t_glyph]),
@@ -87,14 +87,14 @@ def on_text_value_change(attr, old, new):
 
 dialog = Dialog(title="Invalid expression")
 
-slider = Slider(start=1, end=20, value=order, step=1, title="Order:")
+slider = Slider(start=1, end=20, value=order, step=1, title="Order",callback_policy='mouseup')
 slider.on_change('value', on_slider_value_change)
 
 text = TextInput(value=str(expr), title="Expression:")
 text.on_change('value', on_text_value_change)
 
-inputs = HBox(children=[slider, text])
-layout = VBox(children=[inputs, plot, dialog])
+inputs = WidgetBox(children=[slider, text],width=400)
+layout = Column(children=[inputs, plot, dialog])
 update_data()
 document.add_root(layout)
 session.show(layout)

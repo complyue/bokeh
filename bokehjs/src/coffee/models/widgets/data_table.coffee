@@ -5,11 +5,12 @@ SlickGrid = require "slick_grid/slick.grid"
 RowSelectionModel = require "slick_grid/plugins/slick.rowselectionmodel"
 CheckboxSelectColumn = require "slick_grid/plugins/slick.checkboxselectcolumn"
 
-TableWidget = require "./table_widget"
 hittest = require "../../common/hittest"
-BokehView = require "../../core/bokeh_view"
 p = require "../../core/properties"
 DOMUtil = require "../../util/dom_util"
+
+TableWidget = require "./table_widget"
+Widget = require "./widget"
 
 class DataProvider
 
@@ -87,7 +88,7 @@ class DataProvider
 
     @updateSource()
 
-class DataTableView extends BokehView
+class DataTableView extends Widget.View
   attributes:
     class: "bk-data-table"
 
@@ -160,6 +161,8 @@ class DataTableView extends BokehView
 
     if width?
       @$el.css(width: "#{@mget("width")}px")
+    else
+      @$el.css(width: "#{@mget("default_width")}px")
     if height? and height != "auto"
       @$el.css(height: "#{@mget("height")}px")
 
@@ -189,8 +192,6 @@ class DataTable extends TableWidget.Model
 
   @define {
       columns:             [ p.Array,  []    ]
-      width:               [ p.Number        ]
-      height:              [ p.Number, 400   ]
       fit_columns:         [ p.Bool,   true  ]
       sortable:            [ p.Bool,   true  ]
       editable:            [ p.Bool,   false ]
@@ -198,6 +199,14 @@ class DataTable extends TableWidget.Model
       row_headers:         [ p.Bool,   true  ]
       scroll_to_selection: [ p.Bool,   true  ]
     }
+
+  @override {
+    height: 400
+  }
+
+  @internal {
+    default_width:        [ p.Number, 600   ]
+  }
 
 module.exports =
   Model: DataTable
