@@ -19,6 +19,7 @@ ydr = Range1d(start=-2, end=2)
 
 plot = Plot(x_range=xdr, y_range=ydr, plot_width=800, plot_height=800)
 plot.title.text = "Web browser market share (November 2013)"
+plot.toolbar_location = None
 
 colors = {"Chrome": seagreen, "Firefox": tomato, "Safari": orchid, "Opera": firebrick, "IE": skyblue, "Other": lightgray}
 
@@ -110,6 +111,7 @@ doc = Document()
 doc.add_root(plot)
 
 if __name__ == "__main__":
+    doc.validate()
     filename = "donut.html"
     with open(filename, "w") as f:
         f.write(file_html(doc, INLINE, "Donut Chart"))

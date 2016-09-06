@@ -333,6 +333,9 @@ def build_js():
         print("  - bokeh-widgets.min.js  : %6.1f KB" % size("js", "bokeh-widgets.min.js"))
         print("  - bokeh-widgets.min.css : %6.1f KB" % size("css", "bokeh-widgets.min.css"))
 
+        print("  - bokeh-api.js          : %6.1f KB" % size("js", "bokeh-api.js"))
+        print("  - bokeh-api.min.js      : %6.1f KB" % size("js", "bokeh-api.min.js"))
+
         print("  - bokeh-compiler.js     : %6.1f KB" % size("js", "bokeh-compiler.js"))
         print("  - bokeh-compiler.min.js : %6.1f KB" % size("js", "bokeh-compiler.min.js"))
     except Exception as e:
@@ -492,6 +495,7 @@ sampledata_suffixes = ('.csv', '.conf', '.gz', '.json', '.png', '.ics', '.geojso
 
 package_path(join(SERVER, 'static'))
 package_path(join(ROOT, 'bokeh', 'core', '_templates'))
+package_path(join(ROOT, 'bokeh', 'server', 'views'), ('.html'))
 package_path(join(ROOT, 'bokeh', 'sampledata'), sampledata_suffixes)
 
 if '--user' in sys.argv:

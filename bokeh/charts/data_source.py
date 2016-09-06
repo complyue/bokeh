@@ -146,7 +146,7 @@ class DataGroup(object):
             label (str): the label for the group based on unique values of each column
             data (:class:`pandas.DataFrame`): the subset of data associated with the group
             attr_specs dict(str, :class:`AttrSpec`): mapping between attribute name and
-            the associated :class:`AttrSpec`.
+                the associated :class:`AttrSpec`.
 
         """
         self.label = label
@@ -761,7 +761,7 @@ class ChartDataSource(object):
             arrays = list(chain.from_iterable(arrays))
             column_names = column_names or gen_column_names(len(arrays))
             cols = copy(column_names)
-            dims = kwargs.get('dims', None) or DEFAULT_DIMS
+            dims = kwargs.get('dims', DEFAULT_DIMS)
 
             # derive column selections
             for dim, list_of_array in zip(dims, list_of_arrays):
